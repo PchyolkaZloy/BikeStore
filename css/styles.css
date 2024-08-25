@@ -15,12 +15,13 @@ body {
 }
 
 .header__logo {
-    font-size: 5px;
+    font-size: 7px;
     font-weight: bold;
 }
 
 .header__nav {
     display: flex;
+    gap: 20px;
     justify-content: space-between;
     align-items: center;
 }
@@ -29,10 +30,11 @@ body {
     display: flex;
     list-style: none;
     padding: 0;
+    gap: 15px;
 }
 
 .nav__item {
-    margin-left: 20px;
+    font-size: 20px;
 }
 
 .nav__link {
@@ -106,10 +108,12 @@ body {
     text-align: center;
 }
 
-.table__benefits th {
+.table__benefits th,
+.table__benefits td:first-child {
     background-color: #DEDEDE;
     color: #2B2B2B;
     font-weight: bold;
+    font-size: 18px;
 }
 
 .table__benefits tbody tr:nth-child(even) {
@@ -192,7 +196,7 @@ body {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px){
     .bike {
         width: 100%;
     }
@@ -200,9 +204,5 @@ body {
     .header__nav {
         flex-direction: column;
         align-items: center;
-    }
-
-    .nav__item {
-        margin: 0 5px;
     }
 }
