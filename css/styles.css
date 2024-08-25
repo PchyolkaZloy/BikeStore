@@ -45,7 +45,7 @@ body {
 
 
 .main {
-    padding: 20px 20px;
+    padding: 0 20px 20px 20px;
 }
 
 .main__intro {
@@ -125,23 +125,19 @@ body {
 }
 
 
-.main__bikes {
-    margin-top: 30px;
-}
-
-.bikes__title {
+.products__title {
     font-size: 32px;
     text-align: center;
 }
 
-.bikes__grid {
+.products__grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
 }
 
-.bike {
+.product {
     background-color: #FFF;
     padding: 5px;
     border-radius: 8px;
@@ -150,22 +146,22 @@ body {
     text-align: center;
 }
 
-.bike__image {
+.product__image {
     max-width: 100%;
     border-radius: 8px;
 }
 
-.bike__name {
+.product__name {
     font-size: 20px;
     margin-top: 10px;
 }
 
-.bike__price {
+.product__price {
     font-size: 18px;
     margin-top: 5px;
 }
 
-.bike__description {
+.product__description {
     font-size: 16px;
     font-style: italic;
     margin-top: 10px;
@@ -191,13 +187,13 @@ body {
 }
 
 @media screen and (max-width: 1200px) {
-    .bike {
+    .product {
         width: 45%;
     }
 }
 
 @media screen and (max-width: 900px){
-    .bike {
+    .product {
         width: 100%;
     }
 
