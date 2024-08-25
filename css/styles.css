@@ -43,6 +43,11 @@ body {
     font-weight: bold;
 }
 
+.nav__link-active {
+    border-bottom: 1px solid #9c9c9c;
+    color: #9c9c9c;
+}
+
 
 .main {
     padding: 0 20px 20px 20px;
@@ -184,6 +189,11 @@ body {
 .footer__email {
     color: #FFD700;
     text-decoration: underline;
+}
+
+.footer__load-time {
+    display: flex;
+    justify-content: flex-end;
 }
 
 @media screen and (max-width: 1200px) {
