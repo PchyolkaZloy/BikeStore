@@ -1,13 +1,14 @@
+// load time function
 (() => {
     const loadTimeCode = document.querySelector('.load-time');
 
     window.addEventListener('load', () => {
         loadTimeCode.innerHTML +=
-            `Page loaded in ${Math.floor(performance.mark('pageEnd').startTime * 100) / 100} ms.`;
+            `Page loaded in ${Math.floor(performance.mark('pageEnd').startTime * 100) / 100} ms`;
     });
 })();
 
-
+// active/not active nav link function
 (() => {
     document.addEventListener('DOMContentLoaded', function () {
         const menuItems = document.querySelectorAll('.nav__link');
