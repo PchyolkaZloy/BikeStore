@@ -1,3 +1,25 @@
+function updateOrderHistory(order) {
+    const ordersContainer = document.querySelector('.profile__orders');
+    let totalSum = 0;
+
+    let orderHTML = `
+            <div class="order">
+                <h3>Заказ от ${new Date(order.date).toLocaleTimeString()} ${new Date(order.date).toLocaleDateString()}</h3>
+                <p>Имя: ${order.customer}</p>
+                <p>Адрес: ${order.address}</p>
+                <p>Способ оплаты: ${order.payment}</p>
+                <ul class="order__items">
+        `;
+
+    order.items.forEach(item => {
+        orderHTML += `<li>${item.productName} - ${item.productPrice} ₽ x ${item.quantity}</li>`;
+        totalSum += item.productPrice * item.quantity;
+    });
+
+    orderHTML += `</ul><h4>Итого ${totalSum.toLocaleString()} ₽</h4></div>`;
+    ordersContainer.insertAdjacentHTML('beforeend', orderHTML);
+}
+
 (() => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartContainer = document.querySelector('.cart__items');
@@ -18,6 +40,7 @@
 
     document.getElementById('checkout-form').addEventListener('submit', function (event) {
         event.preventDefault();
+
         const name = document.getElementById('customer-name').value;
         const address = document.getElementById('delivery-address').value;
         const paymentMethod = document.getElementById('payment-method').value;
@@ -33,9 +56,17 @@
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
         orders.push(order);
         localStorage.setItem('orders', JSON.stringify(orders));
+
+        updateOrderHistory(order);
+
         localStorage.removeItem('cart');
+        cart.length = 0;
+        cartContainer.innerHTML = '';
+        calculateSumPrices();
+
         alert('Ваш заказ подтвержден!');
     });
+
 
     cartContainer.addEventListener('click', function (e) {
         const productName = e.target.closest('.cart__item').querySelector('h4').textContent;
@@ -62,6 +93,14 @@
             product.quantity = quantity;
             updateCart();
             calculateSumPrices();
+        } else if (e.target.classList.contains('cart__item-remove')) {
+            const index = cart.findIndex(item => item.productName === productName);
+            if (index !== -1) {
+                cart.splice(index, 1);
+                e.target.closest('.cart__item').remove();
+                updateCart();
+                calculateSumPrices();
+            }
         }
     });
 
@@ -71,23 +110,23 @@
 
     cart.forEach(item => {
         const productHTML = `
-                <div class="cart__item">
-                    <img src="${item.productImage}" alt="${item.productName}" class="cart__item-image">
-                    <h4>${item.productName}</h4>
-                    <p>${item.productPrice.toLocaleString()} ₽</p>
-                    <div class="cart-item__quantity">
-                        <button class="quantity__decrease">-</button>
-                        <span class="quantity__value">${item.quantity || 1}</span>
-                        <button class="quantity__increase">+</button>
-                    </div>
-                    <button class="cart__item-remove">Удалить</button>
+            <div class="cart__item">
+                <img src="${item.productImage}" alt="${item.productName}" class="cart__item-image">
+                <h4>${item.productName}</h4>
+                <p>${item.productPrice.toLocaleString()} ₽</p>
+                <div class="cart-item__quantity">
+                    <button class="quantity__decrease">-</button>
+                    <span class="quantity__value">${item.quantity || 1}</span>
+                    <button class="quantity__increase">+</button>
                 </div>
-            `;
+                <button class="cart__item-remove">Удалить</button>
+            </div>
+        `;
         cartContainer.insertAdjacentHTML('beforeend', productHTML);
     });
 })();
 
-// Order history
+// Order history initialization
 (() => {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
     const ordersContainer = document.querySelector('.profile__orders');
@@ -95,28 +134,11 @@
     ordersContainer.innerHTML = '';
     if (orders.length === 0) {
         let emptyHTML = `
-        <h3>Вы еще не сделали ни одного заказа!</h3>`
+        <h3>Вы еще не сделали ни одного заказа!</h3>`;
         ordersContainer.insertAdjacentHTML('beforeend', emptyHTML);
 
         return;
     }
 
-    let totalSum = 0;
-    orders.forEach(order => {
-        let orderHTML = `
-                <div class="order">
-                    <h3>Заказ от ${new Date(order.date).toLocaleTimeString()} ${new Date(order.date).toLocaleDateString()} </h3>
-                    <p>Имя: ${order.customer}</p>
-                    <p>Адрес: ${order.address}</p>
-                    <p>Способ оплаты: ${order.payment}</p>
-                    <ul class="order__items">
-            `;
-        order.items.forEach(item => {
-            orderHTML += `<li>${item.productName} - ${item.productPrice} ₽ x ${item.quantity}</li>`;
-            totalSum += item.productPrice * item.quantity;
-        });
-
-        orderHTML += `</ul><h4>Итого ${totalSum} ₽</h4></div>`;
-        ordersContainer.insertAdjacentHTML('beforeend', orderHTML);
-    });
+    orders.reverse().forEach(order => updateOrderHistory(order));
 })();
