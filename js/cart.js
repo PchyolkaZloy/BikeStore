@@ -17,14 +17,15 @@ function updateOrderHistory(order) {
     });
 
     orderHTML += `</ul><h4>Итого ${totalSum.toLocaleString()} ₽</h4></div>`;
-    ordersContainer.insertAdjacentHTML('beforeend', orderHTML);
+    ordersContainer.insertAdjacentHTML('afterbegin', orderHTML);
 }
 
 (() => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartContainer = document.querySelector('.cart__items');
-    const totalElement = document.createElement('div');
-    totalElement.classList.add('cart__total');
+    const cartContainer = document.querySelector('.cart__table tbody');
+    const cartTotalContainer = document.querySelector('.cart__total-container');
+    const totalElement = document.createElement('span');
+    totalElement.classList.add('cart__total-price');
 
     function updateCart() {
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -35,7 +36,7 @@ function updateOrderHistory(order) {
         cart.forEach(item => {
             total += item.productPrice * item.quantity;
         });
-        totalElement.textContent = `Итоговая сумма: ${total.toLocaleString()} ₽`;
+        totalElement.textContent = `${total.toLocaleString()} ₽`;
     }
 
     document.getElementById('checkout-form').addEventListener('submit', function (event) {
@@ -54,7 +55,7 @@ function updateOrderHistory(order) {
         };
 
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        orders.push(order);
+        orders.unshift(order);
         localStorage.setItem('orders', JSON.stringify(orders));
 
         updateOrderHistory(order);
@@ -69,7 +70,7 @@ function updateOrderHistory(order) {
 
 
     cartContainer.addEventListener('click', function (e) {
-        const productName = e.target.closest('.cart__item').querySelector('h4').textContent;
+        const productName = e.target.closest('.cart__item').querySelector('.cart__item-details span').textContent;
 
         if (e.target.classList.contains('quantity__decrease')) {
             const quantityValue = e.target.nextElementSibling;
@@ -105,24 +106,27 @@ function updateOrderHistory(order) {
     });
 
     cartContainer.innerHTML = '';
-    cartContainer.appendChild(totalElement);
+    cartTotalContainer.appendChild(totalElement);
     calculateSumPrices();
 
     cart.forEach(item => {
-        const productHTML = `
-            <div class="cart__item">
+        const productTrHTML = `
+        <tr class="cart__item">
+            <td class="cart__item-details">
                 <img src="${item.productImage}" alt="${item.productName}" class="cart__item-image">
-                <h4>${item.productName}</h4>
-                <p>${item.productPrice.toLocaleString()} ₽</p>
-                <div class="cart-item__quantity">
-                    <button class="quantity__decrease">-</button>
+                <span>${item.productName}</span>
+            </td>
+            <td class="cart__item-price">${item.productPrice.toLocaleString()} ₽</td>
+            <td>
+                <div class="cart__item-quantity">
+                    <button class="cart__item-button quantity__decrease">-</button>
                     <span class="quantity__value">${item.quantity || 1}</span>
-                    <button class="quantity__increase">+</button>
+                    <button class="cart__item-button quantity__increase">+</button>
+                    <button class="cart__item-remove">X</button>
                 </div>
-                <button class="cart__item-remove">Удалить</button>
-            </div>
-        `;
-        cartContainer.insertAdjacentHTML('beforeend', productHTML);
+            </td>
+        </tr>`;
+        cartContainer.insertAdjacentHTML('beforeend', productTrHTML);
     });
 })();
 
@@ -133,12 +137,10 @@ function updateOrderHistory(order) {
 
     ordersContainer.innerHTML = '';
     if (orders.length === 0) {
-        let emptyHTML = `
-        <h3>Вы еще не сделали ни одного заказа!</h3>`;
-        ordersContainer.insertAdjacentHTML('beforeend', emptyHTML);
+        ordersContainer.insertAdjacentHTML('beforeend', `<h3>Вы еще не сделали ни одного заказа!</h3>`);
 
         return;
     }
 
-    orders.reverse().forEach(order => updateOrderHistory(order));
+    orders.forEach(order => updateOrderHistory(order));
 })();
