@@ -9,11 +9,18 @@
     <title>BikeStore - Магазин Велосипедов</title>
     <link rel="icon" href="images/icon.png">
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/slider.css">
 
     <script src="js/main.js" defer></script>
     <script src="js/product.js" defer></script>
+    <script src="js/slider.js" defer></script>
+
+    <!-- Required Core Stylesheet for Glide.js-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.2/dist/css/glide.core.min.css">
+    <!-- Required Core js for Glide.js-->
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.2/dist/glide.min.js"></script>
 </head>
 
 <body>
@@ -45,43 +52,81 @@ __________   .__            _________ __
             предлагаем лучшие модели по выгодным ценам.</p>
 
         <div class="main__slider">
-            <!-- slider -->
-            <h2 class="slider__title">Акции и распродажи</h2>
-            <p class="slider__text"><em>Не упустите наши лучшие предложения!</em></p>
+            <h2 class="slider__title">Новости и акции</h2>
+            <p class="slider__text"><em>Не упустите наши анонсы и лучшие предложения!</em></p>
 
-            <div class="slider__table">
-                <h3 class="slider__item_heading">Членская карта BikeCard</h3>
-                <table class="table__benefits">
-                    <thead>
-                    <tr>
-                        <th>Уровень карты</th>
-                        <th>Без карты</th>
-                        <th>Standard</th>
-                        <th>Pro</th>
-                    </tr>
-                    </thead>
+            <div class="glide">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide">
+                            <img class="slider__image-small" src="images/slides/card.png" alt="Членская карта">
+                            <div class="slider__table">
+                                <h3 class="slider__item_heading">Членская карта BikeCard</h3>
+                                <table class="table__benefits">
+                                    <thead>
+                                    <tr>
+                                        <th>Уровень карты</th>
+                                        <th>Без карты</th>
+                                        <th>Standard</th>
+                                        <th>Pro</th>
+                                    </tr>
+                                    </thead>
 
-                    <tbody>
-                    <tr>
-                        <td>Бесплатная доставка</td>
-                        <td>Нет</td>
-                        <td>Да</td>
-                        <td>Да</td>
-                    </tr>
-                    <tr>
-                        <td>Кешбэк в виде баллов</td>
-                        <td>Нет</td>
-                        <td>5%</td>
-                        <td>10%</td>
-                    </tr>
-                    <tr>
-                        <td>Скидка на запчасти</td>
-                        <td>Нет</td>
-                        <td>5%</td>
-                        <td>10%</td>
-                    </tr>
-                    </tbody>
-                </table>
+                                    <tbody>
+                                    <tr>
+                                        <td>Бесплатная доставка</td>
+                                        <td>Нет</td>
+                                        <td>Да</td>
+                                        <td>Да</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Кешбэк в виде баллов</td>
+                                        <td>Нет</td>
+                                        <td>5%</td>
+                                        <td>10%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Скидка на запчасти</td>
+                                        <td>Нет</td>
+                                        <td>5%</td>
+                                        <td>10%</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="glide__slide">
+                            <img src="images/slides/sales.png" alt="Распродажа">
+                            <div class="slider__description">
+                                <h3 class="slider__item_heading">Осенняя распродажа</h3>
+                                <p>Не пропустите нашу распродажу! Скидки до 50% на лучшие модели велосипедов и
+                                    аксессуаров. Акция длится только до конца месяца! Не пропустите нашу сезонную
+                                    ликвидационную распродажу!</p>
+                            </div>
+                        </li>
+                        <li class="glide__slide">
+                            <img src="images/slides/competition.png" alt="Соревнования">
+                            <div class="slider__description">
+                                <h3 class="slider__item_heading">Соревнования по велоспорту</h3>
+                                <p>BikeStore является официальным спонсором предстоящих соревнований по велоспорту.
+                                    Приготовьтесь к грандиозным велогонкам! Самые крутые соревнования пройдут в начале
+                                    октября. Приходите поддержать участников и участвуйте в розыгрыше призов! Следите за
+                                    новостями и участвуйте! </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">‹</button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">›</button>
+                </div>
+
+                <div class="glide__bullets" data-glide-el="controls[nav]">
+                    <button class="glide__bullet" data-glide-dir="=0"></button>
+                    <button class="glide__bullet" data-glide-dir="=1"></button>
+                    <button class="glide__bullet" data-glide-dir="=2"></button>
+                </div>
             </div>
         </div>
     </section>

@@ -75,65 +75,6 @@ body {
     font-size: 18px;
 }
 
-.main__slider {
-    padding: 10px;
-    background-color: #FFF;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.slider__item_heading {
-    text-align: center;
-    font-size: 20px;
-    color: #2B2B2B;
-}
-
-.slider__title {
-    text-align: center;
-    font-size: 28px;
-}
-
-.slider__text {
-    text-align: center;
-    font-style: italic;
-}
-
-.slider__table {
-    display: grid;
-    align-items: center;
-    overflow-x: auto;
-    padding-bottom: 20px;
-}
-
-.table__benefits {
-    width: 75%;
-    border-collapse: collapse;
-    grid-template-columns: repeat(4, 1fr);
-    margin: 0 auto;
-}
-
-.table__benefits th,
-.table__benefits td {
-    padding: 10px;
-    border: 2px solid #2B2B2B;
-    text-align: center;
-}
-
-.table__benefits th,
-.table__benefits td:first-child {
-    background-color: #DEDEDE;
-    color: #2B2B2B;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.table__benefits tbody tr:nth-child(even) {
-    background-color: #F0F0F0;
-}
-
-.table__benefits tbody tr:nth-child(odd) {
-    background-color: #FFFFFF;
-}
-
 .footer {
     background-color: #333;
     color: #FFF;
