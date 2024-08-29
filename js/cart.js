@@ -1,23 +1,37 @@
-function updateOrderHistory(order) {
+function updateOrderHistory(order, position) {
     const ordersContainer = document.querySelector('.profile__orders');
     let totalSum = 0;
 
-    let orderHTML = `
-            <div class="order">
-                <h3>Заказ от ${new Date(order.date).toLocaleTimeString()} ${new Date(order.date).toLocaleDateString()}</h3>
-                <p>Имя: ${order.customer}</p>
-                <p>Адрес: ${order.address}</p>
-                <p>Способ оплаты: ${order.payment}</p>
-                <ul class="order__items">
-        `;
-
     order.items.forEach(item => {
-        orderHTML += `<li>${item.productName} - ${item.productPrice} ₽ x ${item.quantity}</li>`;
         totalSum += item.productPrice * item.quantity;
     });
 
-    orderHTML += `</ul><h4>Итого ${totalSum.toLocaleString()} ₽</h4></div>`;
-    ordersContainer.insertAdjacentHTML('afterbegin', orderHTML);
+    let orderHTML = `
+    <div class="order">
+        <div class="order__header">
+            <h3 class="order__date">Заказ от ${new Date(order.date).toLocaleTimeString()} ${new Date(order.date).toLocaleDateString()}</h3>
+            <h4 class="order__total"><b>Итого</b>: ${totalSum.toLocaleString()} ₽</h4>
+        </div>
+        <div class="order__details">
+            <p class="order__customer">Имя: ${order.customer}</p>
+            <p class="order__phone">Телефон: ${order.phoneNumber}</p>
+            <p class="order__address">Адрес: ${order.address}</p>
+            <p class="order__delivery">Способ доставки: ${order.delivery}</p>
+            <p class="order__payment">Способ оплаты: ${order.payment}</p>
+        </div>
+        <ul class="order__items">
+`;
+
+    order.items.forEach(item => {
+        orderHTML += `
+        <li class="order__item">
+            <span class="order__item-name">${item.productName}</span>
+            <span class="order__item-price">${item.quantity} x ${item.productPrice} ₽</span>
+        </li>`;
+    });
+
+    orderHTML += `</ul></div>`;
+    ordersContainer.insertAdjacentHTML(position, orderHTML);
 }
 
 (() => {
@@ -26,10 +40,6 @@ function updateOrderHistory(order) {
     const cartTotalContainer = document.querySelector('.cart__total-container');
     const totalElement = document.createElement('span');
     totalElement.classList.add('cart__total-price');
-
-    function updateCart() {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }
 
     function calculateSumPrices() {
         let total = 0;
@@ -42,14 +52,12 @@ function updateOrderHistory(order) {
     document.getElementById('checkout-form').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const name = document.getElementById('customer-name').value;
-        const address = document.getElementById('delivery-address').value;
-        const paymentMethod = document.getElementById('payment-method').value;
-
         const order = {
-            customer: name,
-            address: address,
-            payment: paymentMethod,
+            customer: document.getElementById('customer-name').value,
+            phoneNumber: document.getElementById("phone-number").value,
+            address: document.getElementById('delivery-address').value,
+            delivery: document.getElementById('delivery-method').value,
+            payment: document.getElementById('payment-method').value,
             items: cart,
             date: new Date().toString(),
         };
@@ -58,7 +66,7 @@ function updateOrderHistory(order) {
         orders.unshift(order);
         localStorage.setItem('orders', JSON.stringify(orders));
 
-        updateOrderHistory(order);
+        updateOrderHistory(order,  'afterbegin');
 
         localStorage.removeItem('cart');
         cart.length = 0;
@@ -81,7 +89,7 @@ function updateOrderHistory(order) {
                 quantityValue.textContent = quantity;
                 const product = cart.find(item => item.productName === productName);
                 product.quantity = quantity;
-                updateCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
                 calculateSumPrices();
             }
         } else if (e.target.classList.contains('quantity__increase')) {
@@ -92,14 +100,14 @@ function updateOrderHistory(order) {
             quantityValue.textContent = quantity;
             const product = cart.find(item => item.productName === productName);
             product.quantity = quantity;
-            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
             calculateSumPrices();
         } else if (e.target.classList.contains('cart__item-remove')) {
             const index = cart.findIndex(item => item.productName === productName);
             if (index !== -1) {
                 cart.splice(index, 1);
                 e.target.closest('.cart__item').remove();
-                updateCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
                 calculateSumPrices();
             }
         }
@@ -133,14 +141,10 @@ function updateOrderHistory(order) {
 // Order history initialization
 (() => {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    console.log(orders)
     const ordersContainer = document.querySelector('.profile__orders');
 
     ordersContainer.innerHTML = '';
-    if (orders.length === 0) {
-        ordersContainer.insertAdjacentHTML('beforeend', `<h3>Вы еще не сделали ни одного заказа!</h3>`);
 
-        return;
-    }
-
-    orders.forEach(order => updateOrderHistory(order));
+    orders.forEach(order => updateOrderHistory(order, "beforeend"));
 })();
